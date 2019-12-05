@@ -1,11 +1,12 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
-import { createStore } from 'redux';
+import { applyMiddleware, createStore } from 'redux';
 import rootReducer from './reducers';
-import { AppState } from './types';
-import Catalog from './containers/Catalog';
+import { AppState, Language } from './types';
 import { Provider } from 'react-redux';
+import { createLogger } from 'redux-logger'
 import './index.css';
+import App from "./App";
 
 const products = [
   { name: 'Apple iPhone 11 64GB (PRODUCT) RED', image: 'https://i.allo.ua/media/catalog/product/cache/1/image/425x295/799896e5c6c37e11608b9f8e1d047d15/i/p/iphone_11_r_2_2.jpg', price: 22999 },
@@ -19,15 +20,22 @@ const products = [
   { name: 'Apple iPhone 8 Plus 64GB Gold', image: 'https://i.allo.ua/media/catalog/product/cache/1/image/425x295/799896e5c6c37e11608b9f8e1d047d15/a/p/apple_iphone_8_plus_64gb_mq8n2_gold_5_2.jpeg', price: 18999 },
 ];
 
-const store = createStore<AppState>(rootReducer, {
-  catalog: products,
-  shoppingCart: [],
-  total: 0,
-});
+const logger = createLogger({});
+
+const store = createStore<AppState>(
+  rootReducer,
+  {
+    catalog: products,
+    shoppingCart: [],
+    totalPrice: 0,
+    language: Language.Russian,
+  },
+  applyMiddleware(logger),
+);
 
 ReactDOM.render(
   <Provider store={store}>
-    <Catalog/>
+    <App/>
   </Provider>,
   document.getElementById('root'),
 );

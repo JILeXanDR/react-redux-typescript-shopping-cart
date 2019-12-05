@@ -4,8 +4,19 @@ export type ProductItem = {
   price: number
 }
 
+export interface ShoppingCartLine {
+  product: ProductItem;
+  count: number;
+}
+
 export interface AppState {
   catalog: ProductItem[];
-  shoppingCart: ProductItem[];
-  total: number;
+  shoppingCart: ShoppingCartLine[];
+  totalPrice: number;
+  language: Language;
+}
+
+export enum Language {
+  Russian,
+  English,
 }
